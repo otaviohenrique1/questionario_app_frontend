@@ -1,5 +1,6 @@
 import { ErrorMessage, Field } from 'formik'
-import React, { HTMLAttributes, InputHTMLAttributes } from 'react'
+import React, { HTMLAttributes, InputHTMLAttributes, ReactNode } from 'react'
+import { Label, LabelProps } from 'reactstrap';
 import styled from 'styled-components';
 
 export type InputProps = InputHTMLAttributes<HTMLInputElement>;
@@ -59,3 +60,33 @@ const FormInputContainerStyled = styled.div<FormInputContainerProps>`
   margin-left: ${(props) => props.margin_left || "0"};
   margin-right: ${(props) => props.margin_right || "0"};
 `;
+
+export type CheckboxProps = {
+  label_texto: ReactNode;
+  label_props: LabelProps;
+  input_props: InputProps;
+};
+
+export function Checkbox(props: CheckboxProps) {
+  return (
+    <Label {...props.label_props}>
+      <Input {...props.input_props} type="checkbox" />
+      {props.label_texto}
+    </Label>
+  )
+}
+
+export type RadioProps = {
+  label_texto: ReactNode;
+  label_props: LabelProps;
+  input_props: InputProps;
+};
+
+export function Radio(props: RadioProps) {
+  return (
+    <Label {...props.label_props}>
+      <Input {...props.input_props} type="radio" />
+      {props.label_texto}
+    </Label>
+  )
+}
