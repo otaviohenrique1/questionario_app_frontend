@@ -6,7 +6,7 @@ import { Center } from '../components/Center'
 import { FormInput } from '../components/FormInput';
 import * as Yup from "yup";
 import styled from 'styled-components';
-// import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface FormUserTypes {
   email: string;
@@ -31,13 +31,13 @@ const initialValues: FormUserTypes = {
 };
 
 export function Login() {
-  // const navigate = useNavigate();
-  
+  const navigate = useNavigate();
+
   function handleSubmit(values: FormUserTypes) {
     console.log(values);
-    // navigate('/');
+    navigate('/novo_usuario');
   }
-  
+
   return (
     <Center>
       <FormContainer className="d-flex flex-column">
@@ -72,6 +72,11 @@ export function Login() {
                     margin_bottom: "10px"
                   }}
                 />
+                <Button
+                  color="link"
+                  className="mt-2"
+                  type="button"
+                >Recuperar senha</Button>
                 <ButtonGroup>
                   <Button
                     color="primary"
@@ -84,6 +89,10 @@ export function Login() {
                     type="reset"
                   >Limpar</Button>
                 </ButtonGroup>
+                <Link
+                  to="/novo_usuario"
+                  className="btn btn-link"
+                >Novo Cadastro</Link>
               </Form>
             );
           }}
