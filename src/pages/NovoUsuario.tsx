@@ -3,7 +3,7 @@ import React from 'react'
 import { ButtonGroup } from 'reactstrap';
 import { Button } from '../components/Button';
 import { Center } from '../components/Center'
-import { FormInput, FormInputProps } from '../components/FormInput';
+import { FormInput, FormInputProps } from '../components/Input';
 import * as Yup from "yup";
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
