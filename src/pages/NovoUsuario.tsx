@@ -1,5 +1,4 @@
 import { Form, Formik, FormikProps } from 'formik';
-import React from 'react'
 import { ButtonGroup } from 'reactstrap';
 import { Button } from '../components/Button';
 import { Center } from '../components/Center'
@@ -33,6 +32,12 @@ const validationSchema = Yup.object().shape({
     .string()
     .required("Campo telefone vazio")
     .max(11, "Máximo 11 caracteres"),
+  dataNascimento: Yup
+    .string()
+    .required("Campo data de nascimento vazio"),
+  cpf: Yup
+    .string()
+    .required("Campo cpf vazio"),
 });
 
 const initialValues: FormUserTypes = {
