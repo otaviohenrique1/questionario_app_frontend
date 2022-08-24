@@ -1,16 +1,19 @@
-import { Form, Formik, FormikProps } from 'formik';
-import { ButtonGroup } from 'reactstrap';
+import { ErrorMessage, Form, Formik, FormikProps } from 'formik';
+import { ButtonGroup, Label } from 'reactstrap';
 import { Button } from '../components/Button';
-import { Center } from '../components/Center'
-import { FormInput, FormInputProps } from '../components/Input';
+import { Center } from '../components/Containers/Center'
+import { Input } from '../components/Input';
 import * as Yup from "yup";
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { Flex } from '../components/Containers/Flex';
 
 interface FormUserTypes {
   nome: string;
   email: string;
   senha: string;
+  confirmacao_senha: string;
+  usuario: string;
   dataNascimento: string;
   telefone: string;
   cpf: string;
@@ -27,7 +30,21 @@ const validationSchema = Yup.object().shape({
   senha: Yup
     .string()
     .required("Campo senha vazio")
-    .min(8, "Mínimo 8 caracteres"),
+    .min(8, "Mínimo de 8 caracteres")
+    .max(255, "Máximo de 255 caracteres"),
+  confirmacao_senha: Yup
+    .string()
+    .when("senha", {
+      is: (val: string) => (val && val.length > 0 ? true : false),
+      then: Yup.string().oneOf(
+        [Yup.ref("senha")],
+        "As senhas não são iguais!"
+      )
+    })
+    .required("Campo confirmação de senha vazio"),
+  usuario: Yup
+    .string()
+    .required("Campo usuario vazio"),
   telefone: Yup
     .string()
     .required("Campo telefone vazio")
@@ -41,12 +58,14 @@ const validationSchema = Yup.object().shape({
 });
 
 const initialValues: FormUserTypes = {
-  nome: '',
+  nome: "",
   email: "",
   senha: "",
-  dataNascimento: '',
-  telefone: '',
-  cpf: '',
+  confirmacao_senha: "",
+  usuario: "",
+  dataNascimento: "",
+  telefone: "",
+  cpf: "",
 };
 
 export function NovoUsuario() {
@@ -58,9 +77,12 @@ export function NovoUsuario() {
   }
 
   return (
-    <Center>
+    <Flex
+      justifyContent="center"
+      paddingTop="1em"
+    >
       <FormContainer className="d-flex flex-column">
-        <h1>NovoUsuario</h1>
+        <h1 className="text-center mb-5">Novo usuário</h1>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -69,83 +91,111 @@ export function NovoUsuario() {
           {(formikProps: FormikProps<FormUserTypes>) => {
             const { errors, touched, values } = formikProps;
 
-            const campos_formulario: FormInputProps[] = [
+            const campos_formulario = [
               {
                 name: "nome",
                 value: values.nome,
-                placeholder: "Nome",
+                id: "nome",
+                label: "Nome",
+                placeholder: "Digite a nome",
                 type: "text",
                 className: `form-control ${(errors.nome && touched.nome) ? "rounded-0 rounded-top" : ""}`,
-                containerPaddingMarginProps: {
-                  margin_bottom: "10px"
-                }
               },
               {
                 name: "email",
                 value: values.email,
-                placeholder: "E-mail",
+                id: "email",
+                label: "E-mail",
+                placeholder: "Digite a e-mail",
                 type: "email",
                 className: `form-control ${(errors.email && touched.email) ? "rounded-0 rounded-top" : ""}`,
-                containerPaddingMarginProps: {
-                  margin_bottom: "10px"
-                }
               },
               {
                 name: "senha",
                 value: values.senha,
-                placeholder: "Senha",
+                id: "senha",
+                label: "Senha",
+                placeholder: "Digite a senha",
                 type: "password",
                 className: `form-control ${(errors.senha && touched.senha) ? "rounded-0 rounded-top" : ""}`,
-                containerPaddingMarginProps: {
-                  margin_bottom: "10px"
-                }
+              },
+              {
+                name: "confirmacao_senha",
+                value: values.confirmacao_senha,
+                id: "confirmacao_senha",
+                label: "Confirmação da senha",
+                placeholder: "Digite a senha novamente",
+                type: "password",
+                className: `form-control ${(errors.confirmacao_senha && touched.confirmacao_senha) ? "rounded-0 rounded-top" : ""}`,
+              },
+              {
+                name: "usuario",
+                value: values.usuario,
+                id: "usuario",
+                label: "Usuário",
+                placeholder: "Digite o usuario",
+                type: "text",
+                className: `form-control ${(errors.usuario && touched.usuario) ? "rounded-0 rounded-top" : ""}`,
               },
               {
                 name: "dataNascimento",
                 value: values.dataNascimento,
-                placeholder: "Data de nascimento",
+                id: "dataNascimento",
+                label: "Data de nascimento",
+                placeholder: "Digite a data de nascimento",
                 type: "date",
                 className: `form-control ${(errors.dataNascimento && touched.dataNascimento) ? "rounded-0 rounded-top" : ""}`,
-                containerPaddingMarginProps: {
-                  margin_bottom: "10px"
-                }
               },
               {
                 name: "telefone",
                 value: values.telefone,
-                placeholder: "telefone",
+                id: "telefone",
+                label: "Telefone",
+                placeholder: "Digite o numero telefone",
                 type: "tel",
                 className: `form-control ${(errors.telefone && touched.telefone) ? "rounded-0 rounded-top" : ""}`,
-                containerPaddingMarginProps: {
-                  margin_bottom: "10px"
-                }
               },
               {
                 name: "cpf",
                 value: values.cpf,
-                placeholder: "CPF",
+                id: "cpf",
+                label: "CPF",
+                placeholder: "Digite o CPF",
                 type: "number",
                 className: `form-control ${(errors.cpf && touched.cpf) ? "rounded-0 rounded-top" : ""}`,
-                containerPaddingMarginProps: {
-                  margin_bottom: "10px"
-                }
               },
             ];
 
             return (
               <Form className="d-flex flex-column">
                 {campos_formulario.map((item, index) => (
-                  <FormInput
+                  <Flex
                     key={index}
-                    name={item.name}
-                    value={item.value}
-                    placeholder={item.placeholder}
-                    type={item.type}
-                    className={item.className}
-                    containerPaddingMarginProps={item.containerPaddingMarginProps}
-                  />
+                    marginBottom="10px"
+                    flexDirection="column"
+                  >
+                    <Label
+                      htmlFor={item.id}
+                      className="form-check-label mb-1"
+                    >
+                      {item.label}
+                    </Label>
+                    <Input
+                      name={item.name}
+                      id={item.id}
+                      value={item.value}
+                      placeholder={item.placeholder}
+                      type={item.type}
+                      className={item.className}
+                    />
+                    <ErrorMessage
+                      name={String(item.name)}
+                      component="span"
+                      className="alert alert-danger rounded-0 rounded-bottom"
+                    />
+                  </Flex>
                 ))}
-                <ButtonGroup>
+                <ButtonGroup className="pb-3">
                   <Button
                     color="primary"
                     className="mt-2"
@@ -168,7 +218,7 @@ export function NovoUsuario() {
           }}
         </Formik>
       </FormContainer>
-    </Center>
+    </Flex>
   )
 }
 

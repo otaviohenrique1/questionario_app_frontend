@@ -2,7 +2,7 @@ import { Form, Formik, FormikProps } from 'formik';
 import React from 'react'
 import { ButtonGroup } from 'reactstrap';
 import { Button } from '../components/Button';
-import { Center } from '../components/Center'
+import { Center } from '../components/Containers/Center'
 import { FormInput } from '../components/Input';
 import * as Yup from "yup";
 import styled from 'styled-components';
@@ -63,11 +63,11 @@ export function Login() {
                   }}
                 />
                 <FormInput
-                  name="email"
-                  value={values.email}
-                  placeholder="E-mail"
-                  type="email"
-                  className={`form-control ${(errors.email && touched.email) ? "rounded-0 rounded-top" : ""}`}
+                  name="senha"
+                  value={values.senha}
+                  placeholder="Senha"
+                  type="senha"
+                  className={`form-control ${(errors.senha && touched.senha) ? "rounded-0 rounded-top" : ""}`}
                   containerPaddingMarginProps={{
                     margin_bottom: "10px"
                   }}
