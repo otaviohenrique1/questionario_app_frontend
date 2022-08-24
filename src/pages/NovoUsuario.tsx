@@ -1,7 +1,6 @@
 import { ErrorMessage, Form, Formik, FormikProps } from 'formik';
 import { ButtonGroup, Label } from 'reactstrap';
 import { Button } from '../components/Button';
-import { Center } from '../components/Containers/Center'
 import { Input } from '../components/Input';
 import * as Yup from "yup";
 import styled from 'styled-components';
