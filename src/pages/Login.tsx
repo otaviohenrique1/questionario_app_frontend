@@ -1,28 +1,23 @@
-import { Form, Formik, FormikProps } from 'formik';
+import { ErrorMessage, Form, Formik, FormikProps } from 'formik';
 import React from 'react'
-import { ButtonGroup } from 'reactstrap';
+import { ButtonGroup, Label } from 'reactstrap';
 import { Button } from '../components/Button';
 import { Center } from '../components/Containers/Center'
-import { FormInput } from '../components/Input';
+import { Input } from '../components/Input';
 import * as Yup from "yup";
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
+import { Flex } from '../components/Containers/Flex';
+import { valida_email, valida_senha } from '../utils/ValidationSchemas';
 
 interface FormUserTypes {
   email: string;
   senha: string;
 }
 
-
 const validationSchema = Yup.object().shape({
-  email: Yup
-    .string()
-    .required("Campo email vazio")
-    .email("Email invalido"),
-  senha: Yup
-    .string()
-    .required("Campo senha vazio")
-    .min(8, "Mínimo 8 caracteres"),
+  email: valida_email,
+  senha: valida_senha,
 });
 
 const initialValues: FormUserTypes = {
@@ -50,28 +45,56 @@ export function Login() {
           {(formikProps: FormikProps<FormUserTypes>) => {
             const { errors, touched, values } = formikProps;
 
+            const campos_formulario = [
+              {
+                name: "email",
+                value: values.email,
+                id: "email",
+                label: "E-mail",
+                placeholder: "Digite a e-mail",
+                type: "email",
+                className: `form-control ${(errors.email && touched.email) ? "rounded-0 rounded-top" : ""}`,
+              },
+              {
+                name: "senha",
+                value: values.senha,
+                id: "senha",
+                label: "Senha",
+                placeholder: "Digite a senha",
+                type: "password",
+                className: `form-control ${(errors.senha && touched.senha) ? "rounded-0 rounded-top" : ""}`,
+              },
+            ];
+
             return (
               <Form className="d-flex flex-column">
-                <FormInput
-                  name="email"
-                  value={values.email}
-                  placeholder="E-mail"
-                  type="email"
-                  className={`form-control ${(errors.email && touched.email) ? "rounded-0 rounded-top" : ""}`}
-                  containerPaddingMarginProps={{
-                    margin_bottom: "10px"
-                  }}
-                />
-                <FormInput
-                  name="senha"
-                  value={values.senha}
-                  placeholder="Senha"
-                  type="senha"
-                  className={`form-control ${(errors.senha && touched.senha) ? "rounded-0 rounded-top" : ""}`}
-                  containerPaddingMarginProps={{
-                    margin_bottom: "10px"
-                  }}
-                />
+                {campos_formulario.map((item, index) => (
+                  <Flex
+                    key={index}
+                    marginBottom="10px"
+                    flexDirection="column"
+                  >
+                    <Label
+                      htmlFor={item.id}
+                      className="form-check-label mb-1"
+                    >
+                      {item.label}
+                    </Label>
+                    <Input
+                      name={item.name}
+                      id={item.id}
+                      value={item.value}
+                      placeholder={item.placeholder}
+                      type={item.type}
+                      className={item.className}
+                    />
+                    <ErrorMessage
+                      name={String(item.name)}
+                      component="span"
+                      className="alert alert-danger rounded-0 rounded-bottom"
+                    />
+                  </Flex>
+                ))}
                 <Button
                   color="link"
                   className="mt-2"
