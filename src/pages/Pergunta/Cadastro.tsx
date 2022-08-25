@@ -1,7 +1,7 @@
-import { AppContainer } from '../components/Containers/AppContainer';
-import { Flex } from '../components/Containers/Flex';
+import { AppContainer } from '../../components/Containers/AppContainer';
+import { Flex } from '../../components/Containers/Flex';
 
-export default function HomePage() {
+export default function Cadastro() {
   return (
     <AppContainer>
       <Flex
@@ -11,7 +11,7 @@ export default function HomePage() {
         paddingLeft="20px"
         paddingRight="20px"
       >
-        <h1>HomePage</h1>
+        <h1>Cadastro</h1>
       </Flex>
     </AppContainer>
   );
